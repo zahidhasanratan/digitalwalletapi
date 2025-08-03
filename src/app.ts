@@ -7,20 +7,28 @@ import { connectDB } from "./config/db";
 // ✅ Route imports
 import authRoutes from "./modules/auth/auth.route";
 import userRoutes from "./modules/user/user.route";
+import walletRoutes from "./modules/wallet/wallet.route"; // ✅ Added wallet routes
 
+// ✅ Load environment variables
 dotenv.config();
+
+// ✅ Connect to MongoDB
 connectDB();
 
+// ✅ Initialize Express app
 const app = express();
+
+// ✅ Middleware
 app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 
-// ✅ Mount routes
-app.use("/api/auth", authRoutes);
-app.use("/api/users", userRoutes);
+// ✅ Mount API routes
+app.use("/api/auth", authRoutes); // login, register
+app.use("/api/users", userRoutes); // /me
+app.use("/api/wallet", walletRoutes); // deposit, withdraw, send, balance
 
-// ✅ Health check
+// ✅ Health check route
 app.get("/", (req, res) => {
   res.send("🚀 API is running...");
 });
