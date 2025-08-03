@@ -2,10 +2,10 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
-
 import { connectDB } from "./config/db";
+
+// ✅ Import your auth route
 import authRoutes from "./modules/auth/auth.route";
-import userRoutes from "./modules/user/user.route";
 
 dotenv.config();
 connectDB();
@@ -15,8 +15,12 @@ app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 
-// Routes
+// ✅ Mount the /api/auth route
 app.use("/api/auth", authRoutes);
-app.use("/api/users", userRoutes);
+
+// ✅ Optional: health check route
+app.get("/", (req, res) => {
+  res.send("🚀 API is running...");
+});
 
 export default app;
