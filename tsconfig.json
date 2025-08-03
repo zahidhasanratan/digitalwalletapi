@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ES6", // Use modern JavaScript
+    "module": "commonjs", // Node.js uses CommonJS
+    "rootDir": "./src", // Where your TS code lives
+    "outDir": "./dist", // Where compiled JS will go
+    "strict": true, // Enable strict type checking
+    "esModuleInterop": true, // Allow default imports
+    "forceConsistentCasingInFileNames": true, // Helps avoid case errors on imports
+    "skipLibCheck": true, // Skips type checking for node_modules
+    "resolveJsonModule": true // Allows importing .json files
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"]
+}
