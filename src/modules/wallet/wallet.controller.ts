@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { Wallet } from "./wallet.model";
 import { User } from "../user/user.model";
+import { Transaction } from "../transaction/transaction.model";
 
 // GET /wallet/balance
 export const getBalance = async (req: any, res: Response) => {
@@ -24,6 +25,14 @@ export const deposit = async (req: any, res: Response) => {
   wallet.balance += amount;
   await wallet.save();
 
+  // ✅ Log transaction
+  await Transaction.create({
+    userId: req.user.userId,
+    type: "deposit",
+    amount,
+    description: "Money deposited",
+  });
+
   res.json({ message: "Deposit successful", balance: wallet.balance });
 };
 
@@ -41,6 +50,14 @@ export const withdraw = async (req: any, res: Response) => {
 
   wallet.balance -= amount;
   await wallet.save();
+
+  // ✅ Log transaction
+  await Transaction.create({
+    userId: req.user.userId,
+    type: "withdraw",
+    amount,
+    description: "Money withdrawn",
+  });
 
   res.json({ message: "Withdraw successful", balance: wallet.balance });
 };
@@ -79,6 +96,15 @@ export const sendMoney = async (req: any, res: Response) => {
 
   await senderWallet.save();
   await recipientWallet.save();
+
+  // ✅ Log transaction
+  await Transaction.create({
+    userId: req.user.userId,
+    type: "send",
+    amount,
+    toUser: recipient._id,
+    description: `Sent to ${recipient.email}`,
+  });
 
   res.json({
     message: "Transfer successful",
