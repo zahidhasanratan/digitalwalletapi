@@ -9,18 +9,25 @@ const transactionSchema = new mongoose.Schema(
     },
     type: {
       type: String,
-      enum: ["deposit", "withdraw", "send"],
+      enum: ["deposit", "withdraw", "send", "cash-in", "cash-out"], // ✅ updated enum
       required: true,
     },
-    amount: { type: Number, required: true },
+    amount: {
+      type: Number,
+      required: true,
+    },
     toUser: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      default: null,
-    }, // for send
-    description: { type: String },
+      default: null, // used for send, cash-in, and cash-out
+    },
+    description: {
+      type: String,
+    },
   },
-  { timestamps: true }
+  {
+    timestamps: true, // ✅ Automatically manage createdAt and updatedAt
+  }
 );
 
 export const Transaction = mongoose.model("Transaction", transactionSchema);
